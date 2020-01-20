@@ -2,29 +2,40 @@ import React, { useState } from "react"
 
 const Numbers = () => {
   let [numberArray, setNumberArray] = useState([])
+  let [uniqueNumberArray, setUniqueNumberArray] = useState([])
 
   const addNumbers = () => {
     let number
     // console.log(Math.floor(Math.random() * 10) / 2)
     number = Math.floor(Math.random() * 10)
-    console.log(numberArray.indexOf(number))
-    console.log(number)
-    if (number > 0 && number < 10 && numberArray.indexOf(number) === -1) {
-      setNumberArray(number)
+
+    if (number > 0 && number < 10) {
+      setNumberArray([number, ...numberArray])
     }
 
     // numberArray.push(number)
     // numberArray.join(<br />)
-
-    setNumberArray([number, ...numberArray])
   }
 
   const getNumberLength = () => {
-    return numberArray.length
+    setUniqueNumberArray(
+      numberArray.map(num => {
+        if (!numberArray.includes(num)) {
+          console.log(num)
+          return num
+        }
+      })
+    )
+
+    //console.log(uniqueNumberArray)
+    return uniqueNumberArray.length
+
+    //eturn numberArray.length
   }
 
   const onSubmit = e => {
     e.preventDefault()
+    getNumberLength()
   }
 
   const numbersRendered = numberArray.map(num => (
@@ -34,8 +45,8 @@ const Numbers = () => {
   return (
     <div>
       <div className="card">
-        <h1>The Numbers Game ({})</h1>
-        <p className="card-text">{getNumberLength()} unique numbers</p>
+        <h1>The Numbers Game ({getNumberLength})</h1>
+        <p className="card-text">{getNumberLength} unique numbers</p>
       </div>
 
       <form onSubmit={onSubmit}>
